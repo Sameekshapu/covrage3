@@ -1,0 +1,28 @@
+module hi;
+ bit [1:0]a;
+ bit [2:0]b;
+  bit clk;
+  always #5 clk=~clk;
+  covergroup sam @ (posedge clk);
+    c1: coverpoint a;
+    c2: coverpoint b;
+  endgroup   
+ sam r;
+      
+ 
+  initial begin
+  r = new;
+    $dumpvars(0,a,b,clk);
+        repeat (5) 
+          begin
+            @ (posedge clk);
+            
+            a = $random;
+            b = $random;
+            $display("a =%0d, b=%0d, coverage=%.2f", a,b,r.get_inst_coverage());    
+   
+          end
+        $finish;
+      end
+  
+    endmodule
